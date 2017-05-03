@@ -17,4 +17,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/portal', 'PortalController@index')->name('portal');
 Route::get('/home', 'HomeController@index')->name('home');

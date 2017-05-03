@@ -14,6 +14,7 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
+    'portalDb' => env('PORTAL_CONNECTION', 'portal'),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +50,21 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+        'portal' => [
+            'driver' => 'mysql',
+            'host' => env('PORTAL_HOST', 'backup-db.webapp.coredial.com'),
+            'port' => env('PORTAL_PORT', '3306'),
+            'database' => env('PORTAL_DATABASE', 'portal'),
+            'username' => env('PORTAL_USERNAME', 'spbilling'),
+            'password' => env('PORTAL_PASSWORD', 'b1cycl3s'),
+            'unix_socket' => env('PORTAL_SOCKET', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => true,
             'engine' => null,
