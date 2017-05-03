@@ -11,7 +11,7 @@ class PortalController extends Controller {
     }
 
     public function getFeatureServers() {
-      $servers = Portal::all();
+      $servers = Portal::where('serverTypeId', 3)->join('voipPlatform', 'server.platformId', '=', 'voipPlatform.voipPlatformId')->get();
       return $servers;
     }
 
