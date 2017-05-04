@@ -8,7 +8,13 @@
             <h3>Stuff</h3>
         </div>
         <div class="panel-body">
-            {{ Form::select('age', ['Under 18', '19 to 30', 'Over 30']) }}
+            <div class="form-group">
+                <select class="form-control" name="featureServer">
+                    @foreach ($data['servers'] as $server)
+                        <option value="{{$server->serverId}}">{{$server->hostname}}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
       </div>
     </div>
