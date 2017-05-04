@@ -14,4 +14,8 @@ class Server extends Model
     public function voipPlatform() {
         return $this->hasOne('App\Models\Portal\VoipPlatform', 'voipPlatformId', 'platformId');
     }
+    
+    public function serverGroup() {
+        return $this->belongsTo('App\Models\Portal\ServerGroup', 'serverTypeId', 'serverTypeId');
+    }
 }
