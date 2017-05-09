@@ -12,10 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('portal');
 })->middleware('auth');
 
 Auth::routes();
 
 Route::get('/portal', 'PortalController@index')->name('portal');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/portal/reseller/{target}/{type}', 'ResellerController@query');
+Route::get('/portal/branch/{target}/{type}', 'BranchController@query');

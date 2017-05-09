@@ -21,4 +21,12 @@ class Branch extends Model
     public function server() {
         return $this->hasOne('App\Models\Portal\Server', 'featureServerId', 'serverId');
     }
+    
+    public function extension() {
+        return $this->hasMany('App\Models\Portal\Extension', 'branchId', 'branchId');
+    }
+    
+    public function sipTrunk() {
+        return $this->hasMany('App\Models\Portal\SIPTrunk', 'branchId', 'branchId');
+    }
 }

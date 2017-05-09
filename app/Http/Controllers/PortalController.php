@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as Request;
 use App\Models\Portal\Server as Server;
 use Form;
 
@@ -25,10 +25,13 @@ class PortalController extends Controller {
     public function getPlatforms($id) {
         return Server::find($id)->voipPlatform()->first();
     }
+    
+    public function query(Request $request) {
+        print_r($request);
+    }
 
     public function index() {
-        $data['servers'] = $this->getFeatureServers();
-        $view = view('portal')->with('data', $data);
+        $view = view('portal');
         return $view;
     }
 }
