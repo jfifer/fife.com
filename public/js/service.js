@@ -1,9 +1,8 @@
 var appSrv = angular.module('appSrv', ['ngResource']);
 
-appSrv.factory('Portal', ['$resource',
+appSrv.factory('Reseller', ['$resource',
   function ($resource) {
-    return $resource('api/portal/:method', { method: "@method", id: "@id" }, {
-      post: { method: 'POST', isArray: true },
-      get: { method: 'GET', isArray: false }
+    return $resource('/portal/reseller/:target/:type/:attrA', { target: "@target", type: "@type", attrA: "@attrA" }, {
+      get: { method: 'GET', isArray: true }
     });
   }]);

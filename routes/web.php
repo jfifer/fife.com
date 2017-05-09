@@ -18,5 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/portal', 'PortalController@index')->name('portal');
-Route::get('/portal/reseller/{target}/{type}', 'ResellerController@query');
+Route::get('/portal/reseller/{target}/{type}/{attrA}', 'ResellerController@query');
 Route::get('/portal/branch/{target}/{type}', 'BranchController@query');

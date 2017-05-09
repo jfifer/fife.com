@@ -12,7 +12,7 @@ class ResellerController extends Controller {
     }
     
     private function doExtensions($type) {
-        $resellers = Reseller::select('resellerId', 'companyName')->get();
+        $resellers = Reseller::select('resellerId', 'companyName')->take(25)->get();
         foreach($resellers as $k=>$reseller) {
             $resellerId = $reseller['resellerId'];
             $Branch = new BranchController();
@@ -21,16 +21,17 @@ class ResellerController extends Controller {
         return $resellers;
     }
     
-    public function query($type, $target) {
+    public function query($target, $type, $attrA) {
         /**
          *
          * Cloud = ExtensionTypeId=2
          * Standard = ExtensionTypeId=1
          *
          **/
+        
         switch($target) {
             case "extension" :
-                return $this->doExtensions($type);
+                return $this->doExtensions($type, $attrA);
                 break;
             default :
                 break;
