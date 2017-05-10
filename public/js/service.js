@@ -6,3 +6,10 @@ appSrv.factory('Reseller', ['$resource',
       get: { method: 'GET', isArray: true }
     });
   }]);
+
+appSrv.factory('Branch', ['$resource',
+  function ($resource) {
+    return $resource('/portal/branch/:target/:type/:attrA', { target: "@target", type: "@type", attrA: "@attrA" }, {
+      get: { method: 'GET', isArray: true }
+    });
+  }]);

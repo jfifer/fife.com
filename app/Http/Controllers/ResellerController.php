@@ -11,12 +11,12 @@ class ResellerController extends Controller {
         $this->middleware('auth');
     }
     
-    private function doExtensions($type) {
+    private function doExtensions($type, $attrA) {
         $resellers = Reseller::select('resellerId', 'companyName')->take(25)->get();
         foreach($resellers as $k=>$reseller) {
             $resellerId = $reseller['resellerId'];
             $Branch = new BranchController();
-            $resellers[$k]->extensionCount = $Branch->getExtensionCountByReseller($resellerId);
+            $resellers[$k]->extensionCount = $Branch->getExtensionCountByReseller($resellerId, $attrA);
         }
         return $resellers;
     }

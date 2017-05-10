@@ -11,7 +11,12 @@ class ExtensionController extends Controller {
         $this->middleware('auth');
     }
     
-    public function getExtensionIdsByBranchId($branchId) {
-        return Extension::select('extensionId')->where('branchId', '=', intval($branchId))->get();
+    public function getExtensionIdsByBranchId($branchId, $extensionTypeId) {
+        $extensions = Extension::select('extensionId')
+            ->where('branchId', '=', intval($branchId));
+        if(intval($extensionTypeId) > 0) {
+            $extensions = $extensions->where('extensionTypeId', '=', intval($extensionTypeId));
+        }
+        return $extensions->get();
     }
 }

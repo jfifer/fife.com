@@ -1,8 +1,13 @@
 var appCtrl = angular.module('appCtrl', []);
 
-appCtrl.controller('homeController', function ($scope, Reseller) {
+appCtrl.controller('homeController', function ($scope, Reseller, Branch) {
   $scope.results = null;
   $scope.columns = [];
+  $scope.models = {
+    'reseller': Reseller,
+    'branch': Branch
+  };
+  
   $scope.reseller = Reseller;
   
   $scope.getObjLength = function(obj) {
@@ -21,7 +26,7 @@ appCtrl.controller('homeController', function ($scope, Reseller) {
         break;
     }
     
-    $scope[groupBy].get({ target: $scope.model, type: $scope.type, attrA: attr }, function(res) {
+    $scope.models[groupBy].get({ target: $scope.model, type: $scope.type, attrA: attr }, function(res) {
       $scope.columns = $scope.getObjLength(res[0]);
       $scope.results = res;
     });
