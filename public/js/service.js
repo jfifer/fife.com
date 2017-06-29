@@ -20,3 +20,10 @@ appSrv.factory('Branch', ['$resource',
       get: { method: 'GET', isArray: true }
     });
   }]);
+
+appSrv.factory('Extension', ['$resource',
+  function ($resource) {
+    return $resource('/portal/extension/:target/:type/:attrA/:attrB', { target: "@target", type: "@type", attrA: "@attrA", attrB: "@attrB" }, {
+      get: { method: 'GET', isArray: true }
+    });
+  }]);

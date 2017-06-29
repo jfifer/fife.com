@@ -1,12 +1,13 @@
 var appCtrl = angular.module('appCtrl', []);
 
-appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $document, Reseller, ResellerChart, Branch) {
+appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $document, Reseller, ResellerChart, Branch, Extension) {
   $scope.results = null;
   $scope.columns = [];
   
   $scope.models = {
     'reseller': Reseller,
     'branch': Branch,
+    'extension': Extension,
     'resellerChart': ResellerChart
   };
   

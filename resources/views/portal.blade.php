@@ -13,6 +13,7 @@
                                 <div class="panel-body">
                                     <label for="select">Select:</label>
                                     <select class="form-control" name="select" ng-model="query.select">
+                                        <option value="extension">Extension</option>
                                         <option value="customer">Customer</option>
                                         <option value="branch">Branch</option>
                                     </select>
