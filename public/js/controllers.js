@@ -59,7 +59,6 @@ appCtrl.controller('chartController', function($rootScope, $scope, $uibModalInst
   };
   
   $scope.closeModal = function() {
-    console.log("close");
     $uibModalInstance.close();
   };
   
