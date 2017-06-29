@@ -11,6 +11,21 @@ class CustomerController extends Controller {
         $this->middleware('auth');
     }
     
+    public function getBranchCustomerStatus($branchId, $status) {
+        $customers = Customer::select('customerId', 'companyName');
+        if(intval($status) === 1) {
+            $customers->where('statusId', '=', 1);
+        } else {
+            $customers->whereIn('statusId', [2,3]);
+        }
+        $customers = $customers->get();
+        
+        if($customers && sizeof($customers) > 0) {
+            return true;
+        }
+        return false;
+    }
+    
     public function query($target, $type, $attrA) {
         switch($target) {
             case "extension" :

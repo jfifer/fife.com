@@ -11,14 +11,27 @@ class BranchController extends Controller {
         $this->middleware('auth');
     }
     
-    public function getExtensionCountByReseller($resellerId, $extensionTypeId) {
+    public function getExtensionCountByReseller($resellerId, $extensionTypeId, $status) {
         $branches = Branch::select('branchId')
             ->where('resellerId', '=', intval($resellerId));
         $branches = $branches->get();
         $count = 0;
-        foreach($branches as $k=>$branch) {
+        $validBranches = [];
+        if(intval($status) > 0) {
+            foreach($branches as $k=>$branch) {
+                $Customer = new CustomerController();
+                if($Customer->getBranchCustomerStatus($branch['branchId'], $status)) {
+                    array_push($validBranches, array('branchId'=>$branch['branchId']));
+                }
+            }
+        } else { $validBranches = $branches; }
+        
+        foreach($validBranches as $k=>$branch) {
             $Extension = new ExtensionController();
-            $count += sizeof($Extension->getExtensionIdsByBranchId($branch['branchId'], $extensionTypeId));
+            $extensions = $Extension->getExtensionsByBranchId($branch['branchId'], $extensionTypeId);
+            if($extensions) {
+                $count += sizeof($extensions);
+            }
         }
         return $count;
     }

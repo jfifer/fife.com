@@ -1,7 +1,8 @@
 var app = angular.module('ngApp', [
     'appCtrl',
     'appDirectives',
-    'appSrv'
+    'appSrv',
+    'ui.bootstrap'
 ], function($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
