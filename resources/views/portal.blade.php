@@ -24,7 +24,23 @@
                                     <label for="from">From:</label>
                                     <select class="form-control" name="from" ng-model="query.from">
                                         <option value="reseller">Reseller</option>
+                                        <option value="branch">Branch</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="panel panel-default col-md-2">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <label for="orderby">Order:</label>
+                                        <select name="orderby" ng-model="query.orderBy">
+                                            <option value="ASC">Ascending</option>
+                                            <option value="DESC" selected>Descending</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="limit">Limit:</label>
+                                        <input type="number" ng-model="query.limit" class="form-component" min="1" value=1 />
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request as Request;
 use App\Models\Portal\Branch as Branch;
+use App\Models\Portal\Extension as Extension;
+use App\Models\Portal\Customer as Customer;
+use Illuminate\Pagination\Paginator as Paginator;
 use Form;
 
 class BranchController extends Controller {
@@ -11,47 +14,44 @@ class BranchController extends Controller {
         $this->middleware('auth');
     }
     
-    public function getExtensionCountByReseller($resellerId, $extensionTypeId, $status) {
-        $branches = Branch::select('branchId')
-            ->where('resellerId', '=', intval($resellerId));
-        $branches = $branches->get();
-        $count = 0;
-        $validBranches = [];
-        if(intval($status) > 0) {
-            foreach($branches as $k=>$branch) {
-                $Customer = new CustomerController();
-                if($Customer->getBranchCustomerStatus($branch['branchId'], $status)) {
-                    array_push($validBranches, array('branchId'=>$branch['branchId']));
-                }
-            }
-        } else { $validBranches = $branches; }
-        
-        foreach($validBranches as $k=>$branch) {
-            $Extension = new ExtensionController();
-            $extensions = $Extension->getExtensionsByBranchId($branch['branchId'], $extensionTypeId);
-            if($extensions) {
-                $count += sizeof($extensions);
-            }
+    private function formatData($data) {
+        $result = array();
+        foreach($data as $k=>$v) {
+            $result[$v['context']] = $v['count'];
         }
-        return $count;
+        return $result;
     }
     
-    private function doExtensions($type, $attrA) {
-        $branches = Branch::select('branchId')->take(25)->get();
-        foreach($branches as $k=>$branch) {
-            $Extension = new ExtensionController();
-            $branches[$k]->count = sizeof($Extension->getExtensionIdsByBranchId($branch['branchId'], $attrA));
-        }
-        return $branches;
+    private function getExtensions($page) {
+        Paginator::currentPageResolver(function() use ($page) {
+            return $page; 
+        });
+        return Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
+            ->selectRaw('branch.description as context, COUNT(*) as count')
+            ->orderBy('count', 'DESC')
+            ->groupBy('branch.description')
+            ->paginate(25);
     }
     
-    public function query($target, $type, $attrA) {
-        
+    private function getExtensionChart() {
+        $results = Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
+            ->selectRaw('branch.description as context, COUNT(*) as count')
+            ->orderBy('count', 'DESC')
+            ->groupBy('branch.description')
+            ->limit(25)
+            ->get();
+        return $this->formatData($results);
+    }
+    
+    public function query($target, $page) {
         switch($target) {
-            case "extension" :
-                return $this->doExtensions($type, $attrA);
+            case "extension":
+                return $this->getExtensions($page);
                 break;
-            default :
+            case "extensionChart":
+                return $this->getExtensionChart();
+                break;
+            default:
                 break;
         }
     }

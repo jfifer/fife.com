@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/portal', 'PortalController@index')->name('portal');
-Route::get('/portal/reseller/{target}/{page}', 'ResellerController@query');
-Route::get('/portal/resellerChart/{target}/{chart}', 'ResellerController@query');
-Route::get('/portal/branch/{target}/{type}', 'BranchController@query');
+Route::get('/portal/reseller/{target}/{limit}/{orderby}/{page}', 'ResellerController@query');
+Route::get('/portal/resellerChart/{target}/{limit}/{orderby}/{chart}', 'ResellerController@query');
+Route::get('/portal/branch/{target}/{limit}/{orderby}/{page}', 'BranchController@query');
+Route::get('/portal/branchChart/{target}/{limit}/{orderby}/{chart}', 'BranchController@query');

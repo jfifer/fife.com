@@ -22,89 +22,92 @@ class ResellerController extends Controller {
         return $result;
     }
     
-    public function getExtensions($page) {
-        Paginator::currentPageResolver(function() use ($page) {
-            return $page; 
-        });
+    private function getExtensions($page, $limit, $orderby) {
+        //Paginator::currentPageResolver(function() use ($page) {
+        //    return $page; 
+        //});
         return Reseller::join('branch', 'branch.resellerId', '=', 'reseller.resellerId')
             ->join('extension', 'extension.branchId', '=', 'branch.branchId')
             ->selectRaw('reseller.companyName as reseller, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('reseller.companyName')
-            ->paginate(25);
+            ->limit($limit)
+            ->get();
     }
     
-    public function getExtensionChart() {
+    private function getExtensionChart($limit, $orderby) {
         $results = Reseller::join('branch', 'branch.resellerId', '=', 'reseller.resellerId')
             ->join('extension', 'extension.branchId', '=', 'branch.branchId')
             ->selectRaw('reseller.companyName as reseller, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('reseller.companyName')
-            ->limit(25)
+            ->limit($limit)
             ->get();
     
         return $this->formatData($results);
     }
     
-    public function getBranches($page) {
-        Paginator::currentPageResolver(function() use ($page) {
-            return $page;
-        });
+    private function getBranches($page, $limit, $orderby) {
+        //Paginator::currentPageResolver(function() use ($page) {
+        //    return $page;
+        //});
         return Reseller::join('branch', 'branch.resellerId', '=', 'reseller.resellerId')
             ->select('reseller.companyName AS reseller', 'branch.description as context')
-            ->orderBy('reseller.companyName', 'ASC')
-            ->paginate(25);
+            ->orderBy('reseller.companyName', $orderby)
+            ->limit($limit)
+            ->get();
     }
     
-    public function getBranchChart() {
+    private function getBranchChart($limit, $orderby) {
         $results = Reseller::join('branch', 'branch.resellerId', '=', 'reseller.resellerId')
             ->selectRaw('reseller.companyName as reseller, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('reseller.companyName')
-            ->limit(25)
+            ->limit($limit)
             ->get();
         return $this->formatData($results);   
     }
     
-    public function getCustomers($page) {
-        Paginator::currentPageResolver(function() use ($page) {
-           return $page; 
-        });
+    private function getCustomers($page, $limit, $orderby) {
+        //Paginator::currentPageResolver(function() use ($page) {
+        //   return $page; 
+        //});
         return Reseller::join('customer', 'customer.resellerId', '=', 'reseller.resellerId')
             ->select('reseller.companyName AS reseller', 'customer.companyName AS customer')
-            ->orderBy('reseller.companyName', 'ASC')
-            ->paginate(25);
+            ->orderBy('reseller.companyName', $orderby)
+            ->limit($limit)
+            ->get();
     }
     
-    public function getCustomerChart() {
+    private function getCustomerChart($limit, $orderby) {
         $results = Reseller::join('customer', 'customer.resellerId', '=', 'reseller.resellerId')
             ->selectRaw('reseller.companyName AS reseller, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('reseller.companyName')
-            ->limit(25)
+            ->limit($limit)
             ->get();
         return $this->formatData($results);
     }
     
-    public function query($target, $page) {
+    public function query($target, $limit, $orderby, $page) {
         switch($target) {
             case "customer":
-                return $this->getCustomers($page);
+                return $this->getCustomers($page, $limit, $orderby);
                 break;
             case "customerChart":
-                return $this->getCustomerChart();
+                return $this->getCustomerChart($limit, $orderby);
                 break;
             case "branch":
-                return $this->getBranches($page);
+                return $this->getBranches($page, $limit, $orderby);
                 break;
             case "branchChart":
-                return $this->getBranchChart();
+                return $this->getBranchChart($limit, $orderby);
                 break;
             case "extension":
-                return $this->getExtensions($page);
+                return $this->getExtensions($page, $limit, $orderby);
                 break;
             case "extensionChart":
-                return $this->getExtensionChart();
+                return $this->getExtensionChart($limit, $orderby);
                 break;
             default:
                 break;

@@ -2,28 +2,42 @@ var appSrv = angular.module('appSrv', ['ngResource']);
 
 appSrv.factory('Reseller', ['$resource',
   function ($resource) {
-    return $resource('/portal/reseller/:target/:page', { target: "@target", page: "@page" }, {
-      get: { method: 'GET', isArray: false }
+    return $resource('/portal/reseller/:target/:limit/:orderby/:page', { target: "@target", limit: "@limit", orderby: "@orderby", page: "@page" }, {
+      get: { method: 'GET', isArray: true }
     });
   }]);
 
 appSrv.factory('ResellerChart', ['$resource',
   function ($resource) {
-    return $resource('/portal/reseller/:target/:type', { target: "@target", page: "@page" }, {
+    return $resource('/portal/reseller/:target/:limit/:orderby/:type', { target: "@target", limit: "@limit", orderby: "@orderby", type: "@type" }, {
       get: { method: 'GET', isArray: false }
     });
   }]);
 
 appSrv.factory('Branch', ['$resource',
   function ($resource) {
-    return $resource('/portal/branch/:target/:type/:attrA/:attrB', { target: "@target", type: "@type", attrA: "@attrA", attrB: "@attrB" }, {
+    return $resource('/portal/branch/:target/:limit/:orderby/:page', { target: "@target", limit: "@limit", orderby: "@orderby", page: "@page" }, {
       get: { method: 'GET', isArray: true }
+    });
+  }]);
+
+appSrv.factory('BranchChart', ['$resource',
+  function ($resource) {
+    return $resource('/portal/branch/:target/:type', { target: "@target", type: "@type" }, {
+      get: { method: 'GET', isArray: false }
     });
   }]);
 
 appSrv.factory('Extension', ['$resource',
   function ($resource) {
-    return $resource('/portal/extension/:target/:type/:attrA/:attrB', { target: "@target", type: "@type", attrA: "@attrA", attrB: "@attrB" }, {
+    return $resource('/portal/extension/:target/:limit/:orderby/:page', { target: "@target", limit: "@limit", orderby: "@orderby", page: "@page" }, {
       get: { method: 'GET', isArray: true }
+    });
+  }]);
+
+appSrv.factory('ExtensionChart', ['$resource',
+  function ($resource) {
+    return $resource('/portal/extension/:target/:type', { target: "@target", type: "@page" }, {
+      get: { method: 'GET', isArray: false }
     });
   }]);

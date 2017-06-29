@@ -1,14 +1,20 @@
 var appCtrl = angular.module('appCtrl', []);
 
-appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $document, Reseller, ResellerChart, Branch, Extension) {
+appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $document, Reseller, ResellerChart, Branch, BranchChart, Extension, ExtensionChart) {
   $scope.results = null;
   $scope.columns = [];
+  $scope.query = {};
+  $scope.query.limit = 1;
+  $scope.query.orderby = "ASC";
+  $scope.query.page = 1;
   
   $scope.models = {
     'reseller': Reseller,
+    'resellerChart': ResellerChart,
     'branch': Branch,
+    'branchChart': BranchChart,
     'extension': Extension,
-    'resellerChart': ResellerChart
+    'extensionChart': ExtensionChart
   };
   
   $scope.reseller = Reseller;
@@ -20,9 +26,9 @@ appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $d
   };
   
   $scope.submitQuery = function(query) {
-    $scope.models[query.from].get({ target: query.select, page: 12, type: null }, function(res) {
-      $scope.results = res.data;
-      $scope.columns = $scope.getObjLength(res.data);
+    $scope.models[query.from].get({ target: query.select, limit: query.limit, orderby: query.orderBy, page: query.page }, function(res) {
+      $scope.results = res;
+      $scope.columns = $scope.getObjLength($scope.results[0]);
     });
   };
   
@@ -33,7 +39,7 @@ appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $d
     var parentElem = parentSelector ? angular.element($document[0].querySelector(parentSelector)) : undefined;
       
     $scope.model = $scope.models[query.from+"Chart"];
-    $scope.model.get({ target: query.select+"Chart", type: type }, function(res) {
+    $scope.model.get({ target: query.select+"Chart", limit: query.limit, orderby: query.orderBy, type: type }, function(res) {
       modalInstance = $uibModal.open({
         animation: true,
         ariaLabelledBy: 'modal-title',
@@ -67,9 +73,10 @@ appCtrl.controller('chartController', function($rootScope, $scope, $uibModalInst
   
   $scope.drawChart = function() {
     // Define the chart to be drawn.
+    console.log(query);
       var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Reseller');
-      data.addColumn('number', 'Customers');
+      data.addColumn('string', query.data.from);
+      data.addColumn('number', query.data.select);
       vals = [];
       angular.forEach($scope.args, function(value, key) {
         vals.push([key, parseInt(value)]);
