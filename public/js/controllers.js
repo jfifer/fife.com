@@ -40,6 +40,7 @@ appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $d
       
     $scope.model = $scope.models[query.from+"Chart"];
     $scope.model.get({ target: query.select+"Chart", limit: query.limit, orderby: query.orderBy, type: type }, function(res) {
+      res = res.toJSON();
       modalInstance = $uibModal.open({
         animation: true,
         ariaLabelledBy: 'modal-title',
@@ -73,24 +74,23 @@ appCtrl.controller('chartController', function($rootScope, $scope, $uibModalInst
   
   $scope.drawChart = function() {
     // Define the chart to be drawn.
-    console.log(query);
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', query.data.from);
-      data.addColumn('number', query.data.select);
-      vals = [];
-      angular.forEach($scope.args, function(value, key) {
-        vals.push([key, parseInt(value)]);
-      });
-      data.addRows(vals);
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', query.data.from);
+    data.addColumn('number', query.data.select);
+    vals = [];
+    angular.forEach($scope.args, function(value, key) {
+      vals.push([key, parseInt(value)]);
+    });
+    data.addRows(vals);
 
-      // Instantiate and draw the chart.
-      var chart;
-      if(query.type === "bar") {
-        chart = new google.visualization.BarChart(document.getElementById('ct-chart'));
-      } else if(query.type === "pie") {
-        chart = new google.visualization.PieChart(document.getElementById('ct-chart'));
-      }
-      chart.draw(data, null);
+    // Instantiate and draw the chart.
+    var chart;
+    if(query.type === "bar") {
+      chart = new google.visualization.BarChart(document.getElementById('ct-chart'));
+    } else if(query.type === "pie") {
+      chart = new google.visualization.PieChart(document.getElementById('ct-chart'));
+    }
+    chart.draw(data, null);
   };
   
   $rootScope.$on('modalRendered', function(event, args){

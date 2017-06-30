@@ -23,7 +23,7 @@ appSrv.factory('Branch', ['$resource',
 
 appSrv.factory('BranchChart', ['$resource',
   function ($resource) {
-    return $resource('/portal/branch/:target/:type', { target: "@target", type: "@type" }, {
+    return $resource('/portal/branch/:target/:limit/:orderby/:type', { target: "@target", limit: "@limit", orderby: "@orderby", type: "@type" }, {
       get: { method: 'GET', isArray: false }
     });
   }]);
@@ -37,7 +37,7 @@ appSrv.factory('Extension', ['$resource',
 
 appSrv.factory('ExtensionChart', ['$resource',
   function ($resource) {
-    return $resource('/portal/extension/:target/:type', { target: "@target", type: "@page" }, {
+    return $resource('/portal/extension/:target/:limit/:orderby/:type', { target: "@target", limit: "@limit", orderby: "@orderby", type: "@type" }, {
       get: { method: 'GET', isArray: false }
     });
   }]);

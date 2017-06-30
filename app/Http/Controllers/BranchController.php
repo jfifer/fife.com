@@ -22,34 +22,35 @@ class BranchController extends Controller {
         return $result;
     }
     
-    private function getExtensions($page) {
-        Paginator::currentPageResolver(function() use ($page) {
-            return $page; 
-        });
+    private function getExtensions($page, $limit, $orderby) {
+        //Paginator::currentPageResolver(function() use ($page) {
+        //    return $page; 
+        //});
         return Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
             ->selectRaw('branch.description as context, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('branch.description')
-            ->paginate(25);
+            ->limit($limit)
+            ->get();
     }
     
-    private function getExtensionChart() {
+    private function getExtensionChart($limit, $orderby) {
         $results = Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
             ->selectRaw('branch.description as context, COUNT(*) as count')
-            ->orderBy('count', 'DESC')
+            ->orderBy('count', $orderby)
             ->groupBy('branch.description')
-            ->limit(25)
+            ->limit($limit)
             ->get();
         return $this->formatData($results);
     }
     
-    public function query($target, $page) {
+    public function query($target, $limit, $orderby, $page) {
         switch($target) {
             case "extension":
-                return $this->getExtensions($page);
+                return $this->getExtensions($page, $limit, $orderby);
                 break;
             case "extensionChart":
-                return $this->getExtensionChart();
+                return $this->getExtensionChart($limit, $orderby);
                 break;
             default:
                 break;
