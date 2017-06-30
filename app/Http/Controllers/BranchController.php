@@ -22,35 +22,40 @@ class BranchController extends Controller {
         return $result;
     }
     
-    private function getExtensions($page, $limit, $orderby) {
+    private function getExtensions($page, $limit, $orderby, $filter) {
         //Paginator::currentPageResolver(function() use ($page) {
         //    return $page; 
         //});
-        return Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
-            ->selectRaw('branch.description as context, COUNT(*) as count')
-            ->orderBy('count', $orderby)
-            ->groupBy('branch.description')
-            ->limit($limit)
-            ->get();
-    }
-    
-    private function getExtensionChart($limit, $orderby) {
         $results = Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
-            ->selectRaw('branch.description as context, COUNT(*) as count')
-            ->orderBy('count', $orderby)
+            ->selectRaw('branch.description as context, COUNT(*) as count');
+        if($filter != '0') {
+            $results->where('branch.description', 'LIKE', $filter.'%');
+        }
+        return $results->orderBy('count', $orderby)
             ->groupBy('branch.description')
             ->limit($limit)
             ->get();
-        return $this->formatData($results);
     }
     
-    public function query($target, $limit, $orderby, $page) {
+    private function getExtensionChart($limit, $orderby, $filter) {
+        $results = Branch::join('extension', 'extension.branchId', '=', 'branch.branchId')
+            ->selectRaw('branch.description as context, COUNT(*) as count');
+        if($filter != '0') {
+            $results->where('branch.description', 'LIKE', $filter.'%');
+        }
+        $results->orderBy('count', $orderby)
+            ->groupBy('branch.description')
+            ->limit($limit);
+        return $this->formatData($results->get());
+    }
+    
+    public function query($target, $limit, $orderby, $filter, $page) {
         switch($target) {
             case "extension":
-                return $this->getExtensions($page, $limit, $orderby);
+                return $this->getExtensions($page, $limit, $orderby, $filter);
                 break;
             case "extensionChart":
-                return $this->getExtensionChart($limit, $orderby);
+                return $this->getExtensionChart($limit, $orderby, $filter);
                 break;
             default:
                 break;

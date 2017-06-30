@@ -30,6 +30,12 @@
                             </div>
                             <div class="panel panel-default col-md-2">
                                 <div class="panel-body">
+                                    <label for="filter">Filter:</label>
+                                    <input name="filter" ng-model="query.filter" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="panel panel-default col-md-2">
+                                <div class="panel-body">
                                     <div class="row">
                                         <label for="orderby">Order:</label>
                                         <select name="orderby" ng-model="query.orderBy">

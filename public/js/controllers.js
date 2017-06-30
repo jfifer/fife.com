@@ -3,10 +3,13 @@ var appCtrl = angular.module('appCtrl', []);
 appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $document, Reseller, ResellerChart, Branch, BranchChart, Extension, ExtensionChart) {
   $scope.results = null;
   $scope.columns = [];
-  $scope.query = {};
-  $scope.query.limit = 1;
-  $scope.query.orderby = "ASC";
-  $scope.query.page = 1;
+  
+  $scope.query = {
+    'limit': 1,
+    'orderby': "ASC",
+    'page': 1,
+    'filter': ''
+  };
   
   $scope.models = {
     'reseller': Reseller,
@@ -26,20 +29,28 @@ appCtrl.controller('homeController', function ($rootScope, $scope, $uibModal, $d
   };
   
   $scope.submitQuery = function(query) {
-    $scope.models[query.from].get({ target: query.select, limit: query.limit, orderby: query.orderBy, page: query.page }, function(res) {
+    filter = query.filter;
+    if(filter === '') {
+      filter = 0;
+    }
+    $scope.models[query.from].get({ target: query.select, limit: query.limit, orderby: query.orderBy, filter: filter, page: query.page }, function(res) {
       $scope.results = res;
       $scope.columns = $scope.getObjLength($scope.results[0]);
     });
   };
   
   $scope.generateChart = function(query, type) {
+    filter = query.filter;
+    if(filter === '') {
+      filter = 0;
+    }
     select = query.select + "Chart";
     from = query.from + "Chart";
     parentSelector = ".modal-parent";
     var parentElem = parentSelector ? angular.element($document[0].querySelector(parentSelector)) : undefined;
       
     $scope.model = $scope.models[query.from+"Chart"];
-    $scope.model.get({ target: query.select+"Chart", limit: query.limit, orderby: query.orderBy, type: type }, function(res) {
+    $scope.model.get({ target: query.select+"Chart", limit: query.limit, orderby: query.orderBy, filter: filter, type: type }, function(res) {
       res = res.toJSON();
       modalInstance = $uibModal.open({
         animation: true,
