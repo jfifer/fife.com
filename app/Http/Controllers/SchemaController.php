@@ -9,6 +9,7 @@ use App\Models\Portal\Reseller as Reseller;
 use App\Models\Portal\Customer as Customer;
 use App\Models\Portal\Branch as Branch;
 use App\Models\Portal\Extension as Extension;
+use App\Models\Portal\Server as Server;
 use Form;
 
 class SchemaController extends Controller {
@@ -27,13 +28,26 @@ class SchemaController extends Controller {
         $query = null;
         switch($output['select']) {
             case "reseller":
-                $query = Reseller::select('companyName');
+                $query = Reseller::select('*');
                 break;
             case "customer":
                 $query = Customer::select('*');
                 break;
             case "branch":
                 $query = Branch::select('*');
+                break;
+            case "extension":
+                $query = Extension::select('*');
+                break;
+            case "server":
+                $query = Server::select('*');
+                break;
+            default:
+                break;
+        }
+        foreach($output as $k=>$v) {
+            if($k !== "select") 
+                $query->where("$k", "=", "$v");
         }
         return $query->get();
     }

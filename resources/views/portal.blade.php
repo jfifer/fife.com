@@ -42,11 +42,23 @@
                                     <input type="checkbox" name="included" class="pull-right" />
                                     <div class="clearfix"></div>
                                  </div>
-                                <div class="panel-content">
+                                <div class="panel-body">
                                     <input name="<%query[columns[i].column]%>" ng-model="query[columns[i].column]" />
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="pull-left">Query Builder</h3>
+                    </div>
+                    <div class="panel-body">
+                        
                     </div>
                 </div>
             </div>
