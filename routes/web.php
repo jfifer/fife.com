@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/portal', 'PortalController@index')->name('portal');
 Route::get('/schema/schema/{table}', 'SchemaController@query');
+Route::post('/schema/schema/query/{query}', 'SchemaController@getParams');

@@ -17,4 +17,9 @@ class SchemaController extends Controller {
             ->where('TABLE_NAME', '=', "$table")
             ->get();
     }
+    
+    public function getParams($params) {
+        parse_str($params, $output);
+        return $output;
+    }
 }

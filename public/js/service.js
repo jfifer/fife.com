@@ -7,3 +7,11 @@ appSrv.factory('Schema', ['$resource',
       post: { method: 'POST', isArray: false }
     });
   }]);
+
+appSrv.factory('Query', ['$resource',
+  function ($resource) {
+    return $resource('/schema/schema/query/:params', { params: "@params" }, {
+      get: { method: 'GET', isArray: true },
+      post: { method: 'POST', isArray: false }
+    });
+  }]);
