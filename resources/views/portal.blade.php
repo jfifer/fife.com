@@ -51,14 +51,32 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="results.length > 0">
             <div class="col-md-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default col-md-12">
                     <div class="panel-heading">
-                        <h3 class="pull-left">Query Builder</h3>
+                        <h3 class="panel-title pull-left">Results</h3>
+                        <div class="form-group pull-right">
+                            <label for="chartType">Chart Type</label>
+                            <select class="form-component" ng-model="chartType">
+                                <option value="bar">Bar</option>
+                                <option value="pie">Pie Chart</option>
+                            </select>
+                            <button class="pull-right" ng-click="generateChart(query, chartType)">Generate</button>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
-                        
+                        <table style="width:60%;margin:0 auto;">
+                            <tr>
+                                <th ng-repeat="column in columns"><%column%></th>
+                            </tr>
+                            <tr ng-repeat="result in results">
+                                <td ng-repeat="res in result">
+                                    <% res %>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,12 @@ appCtrl.controller('homeController', function ($scope, Schema, Query) {
   $scope.query = {};
   $scope.i = 0;
   
+  $scope.getObjLength = function(obj) {
+    columns = [];
+    angular.forEach(obj, function(k, v) { columns.push(v); });
+    return columns;
+  };
+  
   $scope.parseUrlString = function(obj) {
     str = "";
     for (var key in obj) {
