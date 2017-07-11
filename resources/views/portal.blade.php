@@ -12,84 +12,37 @@
                             <div class="panel panel-default col-md-2">
                                 <div class="panel-body">
                                     <label for="select">Select:</label>
-                                    <select class="form-control" name="select" ng-model="query.select">
-                                        <option value="extension">Extension</option>
-                                        <option value="customer">Customer</option>
-                                        <option value="branch">Branch</option>
+                                    <select class="form-control" name="select" ng-model="query.select" ng-change="updateColumns(query.select)">
+                                        <option value="reseller">Resellers</option>
+                                        <option value="branch">Branches</option>
+                                        <option value="server">Servers</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="panel panel-default col-md-2">
-                                <div class="panel-body">
-                                    <label for="from">From:</label>
-                                    <select class="form-control" name="from" ng-model="query.from">
-                                        <option value="reseller">Reseller</option>
-                                        <option value="branch">Branch</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="panel panel-default col-md-2">
-                                <div class="panel-body">
-                                    <label for="filter">Filter:</label>
-                                    <input name="filter" ng-model="query.filter" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="panel panel-default col-md-2">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <label for="orderby">Order:</label>
-                                        <select name="orderby" ng-model="query.orderBy">
-                                            <option value="ASC">Ascending</option>
-                                            <option value="DESC" selected>Descending</option>
-                                        </select>
-                                    </div>
-                                    <div class="row">
-                                        <label for="limit">Limit:</label>
-                                        <input type="number" ng-model="query.limit" class="form-component" min="1" value=1 />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        <div class="row" id="extensionDtl">
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                      <button data-ng-click="submitQuery(query);">Generate Query</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" ng-if="results.length > 0">
+        <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-default col-md-12">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title pull-left">Results</h3>
-                        <div class="form-group pull-right">
-                            <label for="chartType">Chart Type</label>
-                            <select class="form-component" ng-model="chartType">
-                                <option value="bar">Bar</option>
-                                <option value="pie">Pie Chart</option>
-                            </select>
-                            <button class="pull-right" ng-click="generateChart(query, chartType)">Generate</button>
-                        </div>
+                        <h3>Query Builder</h3>
+                        <button class="btn btn-default pull-right" ng-click="submitQuery(query)">Submit</button>
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
-                        <table style="width:60%;margin:0 auto;">
-                            <tr>
-                                <th ng-repeat="column in columns"><%column%></th>
-                            </tr>
-                            <tr ng-repeat="result in results">
-                                <td ng-repeat="res in result">
-                                    <% res %>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="row" ng-repeat="column in columns track by $index" ng-if="$index % 4 == 0">
+                            <div class="col-xs-3" 
+                                 ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]" 
+                                 ng-if="columns[i] != null">
+                                <div><label><%columns[i].column%></label> <input name="<%query[columns[i].column]%>" ng-model="query[columns[i].column]" /></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal-parent big-modal" id="modal-parent">
     </div>
 @endsection

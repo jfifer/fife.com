@@ -15,6 +15,7 @@ return [
 
     'default' => env('DB_CONNECTION', 'mysql'),
     'portalDb' => env('PORTAL_CONNECTION', 'portal'),
+    'shemaDb' => env('SCHEMA_CONNECTION', 'schema'),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,6 +51,21 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+        
+        'schema' => [
+            'driver' => 'mysql',
+            'host' => env('SCHEMA_HOST', 'backup-db.webapp.coredial.com'),
+            'port' => env('SCHEMA_PORT', '3306'),
+            'database' => env('SCHEMA_DATABASE', 'information_schema'),
+            'username' => env('SCHEMA_USERNAME', 'spbilling'),
+            'password' => env('SCHEMA_PASSWORD', 'b1cycl3s'),
+            'unix_socket' => env('SCHEMA_SOCKET', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => true,
             'engine' => null,
