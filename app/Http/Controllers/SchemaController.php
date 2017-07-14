@@ -24,30 +24,33 @@ class SchemaController extends Controller {
     }
     
     public function getParams($params) {
-        parse_str($params, $output);
+        parse_str(rawurldecode($params), $output);
+        $includes = explode(",", explode("=", $output['eloquent_includes'])[1]);
+        unset($output['eloquent_includes']);
+        $from = $output['select'];
+        unset($output['select']);
         $query = null;
-        switch($output['select']) {
+        switch($from) {
             case "reseller":
-                $query = Reseller::select('*');
+                $query = Reseller::select($includes);
                 break;
             case "customer":
-                $query = Customer::select('*');
+                $query = Customer::select($includes);
                 break;
             case "branch":
-                $query = Branch::select('*');
+                $query = Branch::select($includes);
                 break;
             case "extension":
-                $query = Extension::select('*');
+                $query = Extension::select($includes);
                 break;
             case "server":
-                $query = Server::select('*');
+                $query = Server::select($includes);
                 break;
             default:
                 break;
         }
         foreach($output as $k=>$v) {
-            if($k !== "select") 
-                $query->where("$k", "=", "$v");
+            $query->where("$k", "=", "$v");
         }
         return $query->get();
     }

@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3>Query Builder</h3>
+                        <h3>Model</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -28,7 +28,7 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="pull-left">Query Builder</h3>
+                        <h3 class="pull-left">Options</h3>
                         <button class="btn btn-default pull-right" ng-click="submitQuery(query)">Submit</button>
                         <div class="clearfix"></div>
                     </div>
@@ -39,7 +39,7 @@
                                  ng-if="columns[i] != null">
                                  <div class="panel-heading">
                                     <span class="pull-left"><%columns[i].column%></span>
-                                    <input type="checkbox" name="included" class="pull-right" />
+                                    <input type="checkbox" ng-model="query.eloquent_includes[columns[i].column]" value='true' class="pull-right" />
                                     <div class="clearfix"></div>
                                  </div>
                                 <div class="panel-body">
@@ -57,19 +57,13 @@
                     <div class="panel-heading">
                         <h3 class="panel-title pull-left">Results</h3>
                         <div class="form-group pull-right">
-                            <label for="chartType">Chart Type</label>
-                            <select class="form-component" ng-model="chartType">
-                                <option value="bar">Bar</option>
-                                <option value="pie">Pie Chart</option>
-                            </select>
-                            <button class="pull-right" ng-click="generateChart(query, chartType)">Generate</button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="panel-body">
                         <table style="width:60%;margin:0 auto;">
                             <tr>
-                                <th ng-repeat="column in columns"><%column%></th>
+                                <th ng-repeat="column in resCols"><%column%></th>
                             </tr>
                             <tr ng-repeat="result in results">
                                 <td ng-repeat="res in result">

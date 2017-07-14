@@ -3,6 +3,10 @@ var appCtrl = angular.module('appCtrl', []);
 appCtrl.controller('homeController', function ($scope, Schema, Query) {
   $scope.columns = [];
   $scope.query = {};
+  $scope.crap = [];
+  $scope.resCols = [];
+  $scope.results = [];
+  $scope.includes = [];
   $scope.i = 0;
   
   $scope.getObjLength = function(obj) {
@@ -29,8 +33,14 @@ appCtrl.controller('homeController', function ($scope, Schema, Query) {
   };
   
   $scope.submitQuery = function(query) {
+    includes = [];
+    angular.forEach(query.eloquent_includes, function(key, val) {
+      includes.push(val);
+    });
+    query.eloquent_includes = $scope.parseUrlString({ 'eloquent': includes });
     Query.post({ params: $scope.parseUrlString(query) }, function(res) {
-      console.log(res);
+      $scope.results = res;
+      $scope.resCols = $scope.getObjLength(res);
     });
   };
 });
